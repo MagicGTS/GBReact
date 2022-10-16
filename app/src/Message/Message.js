@@ -1,8 +1,7 @@
 import './Message.css';
 function Message(props) {
     return (
-        <span className="Message">{props.msg}
-        </span>
+        <div><span className="MsgAuthor">{props.author}:</span> <span className="MsgText">{props.text}</span></div>
     );
 }
 export default Message;
