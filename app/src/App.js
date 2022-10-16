@@ -10,43 +10,6 @@ import {ThemeContext,themes} from "./Theme";
 //import Grid from '@mui/material/Grid'; // Grid version 1
 
 function App() {
-  const [chats, setChats] = useState({
-    0: {
-      name: "chat1",
-      messages: [],
-    },
-    1: {
-      name: "chat2",
-      messages: [],
-    },
-  });
-  const handleAddMessage = (chat, author, text) => {
-    setChats((prevChats) => {
-      let chats = { ...prevChats };
-      chats[chat].messages = [
-        ...prevChats[chat].messages,
-        {
-          text: text,
-          author: author,
-        },
-      ];
-      return chats;
-    });
-  };
-  useEffect(() => {
-    
-      for (const [id, chat] of Object.entries(chats)) {
-        if (chat.messages.length > 0) {
-        let lastMessage = chat.messages.slice(-1)[0];
-      if (lastMessage.author !== "autobot") {
-        const timer = setTimeout(() => {
-          handleAddMessage(id,"autobot", " I'm watching you!");
-        }, 1000);
-        return () => clearTimeout(timer);
-      }
-      }
-    }
-  }, [chats]);
   //debugger;
 
   

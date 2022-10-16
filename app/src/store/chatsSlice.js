@@ -38,7 +38,7 @@ export function getMessages(id) {
     }
     
 export function getMessagesByAuthor(id,author) {
-    return (state) => state.chats[id].messages.filter(item => item.author == author )
+    return (state) => state.chats[id].messages.filter(item => item.author === author )
     }
 export const { addMessage,delMessage } = chatsSlice.actions
 

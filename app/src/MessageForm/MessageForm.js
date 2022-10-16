@@ -4,7 +4,7 @@ import { FormControl, InputLabel, Input, FormHelperText, Button } from '@mui/mat
 import Box from '@mui/material/Box';
 
 import { useDispatch } from 'react-redux'
-import { addMessage } from '../store/chatsSlice.js'
+import { addMessageWithThunk } from '../store/chatsMiddleware.js'
 
 function MessageForm(props) {
     const [state, setState] = useState({ author: 'author', text: 'text' });
@@ -18,7 +18,7 @@ function MessageForm(props) {
     }
 
     const handleSubmit = (event) => {
-        dispatch(addMessage({chat: props.id, author: state.author, text: state.text}));
+        dispatch(addMessageWithThunk(props.id,state.author,state.text))
         event.preventDefault();
     }
 
