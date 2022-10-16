@@ -4,24 +4,41 @@ import Grid from "@mui/material/Unstable_Grid2"; // Grid version 2
 import {
   useParams,
 } from 'react-router-dom';
+import { useSelector,useDispatch } from 'react-redux'
+import { addMessage,getMessages,getMessagesByAuthor } from '../store/chatsSlice.js'
+import React, { useEffect  } from "react";
+
 function Chats(props) {
-  //debugger;
+  const chats = useSelector((state) => state.chats)
   const { id, author} = useParams();
-  const messages ={value:[]};
-  if (typeof author !== 'undefined'){
-    messages.value = [...props.chats[id].messages.filter(item => item.author == author )]
-  }else{
-    messages.value = [...props.chats[id].messages]
+  const selectedMessages = useSelector((typeof author !== "undefined") ? getMessagesByAuthor(id,author) : getMessages(id));
+  
+  const dispatch = useDispatch()
+  useEffect(() => {
+    
+    for (const [id, chat] of Object.entries(chats)) {
+      if (chat.messages.length > 0) {
+      let lastMessage = chat.messages.slice(-1)[0];
+    if (lastMessage.author !== "autobot") {
+      const timer = setTimeout(() => {
+        dispatch(addMessage({chat: id, author: "autobot", text: "I'm watching you!"}));
+      }, 1000);
+      return () => clearTimeout(timer);
+    }
+    }
   }
+}, [chats]);
+  
+  
   return (
     <Grid container spacing={1}>
        <Grid xs={10} md={8}>
-        <MessageForm handler={props.handler} id={id}/>
+        <MessageForm id={id}/>
       </Grid>
       <Grid xs={10} md={8}>
         <ul>
           {            
-          messages.value.map((message, index) => (
+          selectedMessages.map((message, index) => (
             <li key={index}>
               <Message author={message.author} text={message.text} />
             </li>

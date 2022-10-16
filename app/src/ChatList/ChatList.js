@@ -5,8 +5,9 @@ import ListItem from '@mui/material/ListItem';
 import ListItemText from '@mui/material/ListItemText';
 import Divider from '@mui/material/Divider';
 import { Link,Outlet } from "react-router-dom";
-
-function ChatList(props) {
+import { useSelector } from 'react-redux'
+function ChatList() {
+    const chats = useSelector((state) => state.chats)
     return (
         <Box sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
             <nav aria-label="chat list header">
@@ -20,8 +21,8 @@ function ChatList(props) {
             <nav aria-label="main chats list">
                 <List>
                     {
-                        Object.keys(props.chats).map((chat) => (
-                            <ListItem disablePadding key={chat}><Link to={"/chats/"+ chat}><ListItemText primary={props.chats[chat]['name']} /></Link></ListItem>
+                        Object.keys(chats).map((chat) => (
+                            <ListItem disablePadding key={chat}><Link to={"/chats/"+ chat}><ListItemText primary={chats[chat]['name']} /></Link></ListItem>
                             
                         ))
                     }

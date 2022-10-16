@@ -59,9 +59,9 @@ function App() {
         <Route path="/" element={<Layout />}>
           <Route index element={<Home />} />
           <Route path="profile" element={<Profile />} />
-          <Route path="chats" element={<ChatList chats={chats} />}>
-            <Route path=":id" element={<Chats chats={chats} handler={handleAddMessage} />} />
-            <Route path=":id/:author" element={<Chats chats={chats} handler={handleAddMessage} />} />
+          <Route path="chats" element={<ChatList />}>
+            <Route path=":id" element={<Chats />} />
+            <Route path=":id/:author" element={<Chats />} />
           </Route>
 
           {/* Using path="*"" means "match anything", so this route

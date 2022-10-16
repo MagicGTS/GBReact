@@ -3,8 +3,12 @@ import React, { useState } from 'react';
 import { FormControl, InputLabel, Input, FormHelperText, Button } from '@mui/material';
 import Box from '@mui/material/Box';
 
+import { useDispatch } from 'react-redux'
+import { addMessage } from '../store/chatsSlice.js'
+
 function MessageForm(props) {
     const [state, setState] = useState({ author: 'author', text: 'text' });
+    const dispatch = useDispatch()
 
     const handleChange = (event) => {
         setState({
@@ -14,7 +18,7 @@ function MessageForm(props) {
     }
 
     const handleSubmit = (event) => {
-        props.handler(props.id, state.author, state.text);
+        dispatch(addMessage({chat: props.id, author: state.author, text: state.text}));
         event.preventDefault();
     }
 
