@@ -5,7 +5,14 @@ import {
   useParams,
 } from 'react-router-dom';
 function Chats(props) {
-  const { id } = useParams();
+  //debugger;
+  const { id, author} = useParams();
+  const messages ={value:[]};
+  if (typeof author !== 'undefined'){
+    messages.value = [...props.chats[id].messages.filter(item => item.author == author )]
+  }else{
+    messages.value = [...props.chats[id].messages]
+  }
   return (
     <Grid container spacing={1}>
        <Grid xs={10} md={8}>
@@ -13,11 +20,13 @@ function Chats(props) {
       </Grid>
       <Grid xs={10} md={8}>
         <ul>
-          {props.chats[id].messages.map((message, index) => (
+          {            
+          messages.value.map((message, index) => (
             <li key={index}>
               <Message author={message.author} text={message.text} />
             </li>
-          ))}
+          ))
+          }
         </ul>
       </Grid>  
     </Grid>
