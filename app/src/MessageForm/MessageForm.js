@@ -14,7 +14,7 @@ function MessageForm(props) {
     }
 
     const handleSubmit = (event) => {
-        props.handler(state.author, state.text);
+        props.handler(props.id, state.author, state.text);
         event.preventDefault();
     }
 

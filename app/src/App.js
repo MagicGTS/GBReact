@@ -1,56 +1,102 @@
-import logo from './logo.svg';
-import './App.css';
-import React, { useState, useEffect } from 'react';
-import Message from './Message/Message.js';
-import ChatList from './ChatList/ChatList.js';
-import MessageForm from './MessageForm/MessageForm.js';
+import logo from "./logo.svg";
+import "./App.css";
+import React, { useState, useEffect } from "react";
+import { Routes, Route, Link, Outlet } from "react-router-dom";
+import Home from "./Home/Home.js";
+import Profile from "./Profile/Profile.js";
+import Chats from "./Chats/Chats.js";
+import ChatList from "./ChatList/ChatList.js";
 //import Grid from '@mui/material/Grid'; // Grid version 1
-import Grid from '@mui/material/Unstable_Grid2'; // Grid version 2
-
 
 function App() {
-  const [messages, setMessages] = useState([]);
-  const [chats, setChats] = useState([{ id: "chat1", name: "Main chat room" }, { id: "chat2", name: "Second chat room" }]);
-  const handleAddMessage = (author, text) => {
-    setMessages((prevMessages) => [
-      ...prevMessages,
-      {
-        text: text,
-        author: author,
-      },
-    ]);
+  const [chats, setChats] = useState({
+    0: {
+      name: "chat1",
+      messages: [],
+    },
+    1: {
+      name: "chat2",
+      messages: [],
+    },
+  });
+  const handleAddMessage = (chat, author, text) => {
+    setChats((prevChats) => {
+      let chats = { ...prevChats };
+      chats[chat].messages = [
+        ...prevChats[chat].messages,
+        {
+          text: text,
+          author: author,
+        },
+      ];
+      return chats;
+    });
   };
   useEffect(() => {
-    if (messages.length > 0) {
-      let lastMessage = messages.slice(-1)[0];
+    
+      for (const [id, chat] of Object.entries(chats)) {
+        if (chat.messages.length > 0) {
+        let lastMessage = chat.messages.slice(-1)[0];
       if (lastMessage.author !== "autobot") {
         const timer = setTimeout(() => {
-          handleAddMessage("autobot", " I'm watching you!");
+          handleAddMessage(id,"autobot", " I'm watching you!");
         }, 1000);
         return () => clearTimeout(timer);
       }
+      }
     }
-  }, [messages]);
+  }, [chats]);
+  //debugger;
 
+  
 
   //debugger;
   return (
     <div className="App">
-      <Grid container spacing={1}>
-        <Grid xs={2} md={4}>
-          <ChatList chats={chats} />
-        </Grid>
-        <Grid xs={10} md={8}>
-          <MessageForm handler={handleAddMessage} />
-        </Grid>
-        <Grid xs={10} md={8}><ul>
-          {messages.map((message, index) => (
-            <li key={index}><Message author={message.author} text={message.text} /></li>
-          ))}
-        </ul>
-        </Grid>
-      </Grid>
+      <Routes>
+        <Route path="/" element={<Layout />}>
+          <Route index element={<Home />} />
+          <Route path="profile" element={<Profile />} />
+          <Route path="chats" element={<ChatList chats={chats} />}>
+            <Route path=":id" element={<Chats chats={chats} handler={handleAddMessage} />} />
+          </Route>
 
+          {/* Using path="*"" means "match anything", so this route
+                acts like a catch-all for URLs that we don't have explicit
+                routes for. */}
+          <Route path="*" element={<NoMatch />} />
+        </Route>
+      </Routes>
+    </div>
+  );
+}
+function Layout() {
+  return (
+    <div>
+      <ul>
+        <li>
+          <Link to="/profile">profile</Link>
+        </li>
+        <li>
+          <Link to="/chats">chats</Link>
+        </li>
+        <li>
+          <Link to="/">Home</Link>
+        </li>
+      </ul>
+      <div>
+        <Outlet />
+      </div>
+    </div>
+  );
+}
+function NoMatch() {
+  return (
+    <div>
+      <h2>Nothing to see here!</h2>
+      <p>
+        <Link to="/">Go to the home page</Link>
+      </p>
     </div>
   );
 }

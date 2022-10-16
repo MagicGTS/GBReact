@@ -4,6 +4,7 @@ import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemText from '@mui/material/ListItemText';
 import Divider from '@mui/material/Divider';
+import { Link,Outlet } from "react-router-dom";
 
 function ChatList(props) {
     return (
@@ -18,11 +19,16 @@ function ChatList(props) {
             <Divider />
             <nav aria-label="main chats list">
                 <List>
-                    {props.chats.map(chat => (
-                        <ListItem disablePadding key={chat.id}><ListItemText primary={chat.name} /></ListItem>
-                    ))}
+                    {
+                        Object.keys(props.chats).map((chat) => (
+                            <ListItem disablePadding key={chat}><Link to={"/chats/"+ chat}><ListItemText primary={props.chats[chat]['name']} /></Link></ListItem>
+                            
+                        ))
+                    }
                 </List>
             </nav>
+            <Divider />
+            <Outlet />
         </Box>
     );
 }
