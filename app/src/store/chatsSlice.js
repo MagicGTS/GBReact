@@ -26,20 +26,20 @@ export const chatsSlice = createSlice({
       return state;
     },
     delMessage: (state, action) => {
-        if (state.hasOwnProperty(action.payload.chat)) {
-          state[action.payload.chat].messages = state[action.payload.chat].messages.filter((item,index) => index !== action.payload.index) 
-        }
-        return state;
-      },
+      if (state.hasOwnProperty(action.payload.chat)) {
+        state[action.payload.chat].messages = state[action.payload.chat].messages.filter((item, index) => index !== action.payload.index)
+      }
+      return state;
+    },
   },
 });
 export function getMessages(id) {
-    return (state) => state.chats[id].messages
-    }
-    
-export function getMessagesByAuthor(id,author) {
-    return (state) => state.chats[id].messages.filter(item => item.author === author )
-    }
-export const { addMessage,delMessage } = chatsSlice.actions
+  return (state) => state.chats[id].messages
+}
+
+export function getMessagesByAuthor(id, author) {
+  return (state) => state.chats[id].messages.filter(item => item.author === author)
+}
+export const { addMessage, delMessage } = chatsSlice.actions
 
 export default chatsSlice.reducer
