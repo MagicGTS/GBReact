@@ -6,8 +6,12 @@ import Home from "./Home/Home.js";
 import Profile from "./Profile/Profile.js";
 import Chats from "./Chats/Chats.js";
 import ChatList from "./ChatList/ChatList.js";
+import LoginForm from "./LoginForm/LoginForm.js";
 import GistsList from "./GistsList/GistsList.js";
+import ProtectedRoute from "./ProtectedRoute/ProtectedRoute.js";
+import { selectUser, selectUserError, selectUserLoading, selectIsAuth } from './store/userSlice.js'
 import { ThemeContext, themes } from "./Theme";
+import { useSelector, useDispatch } from 'react-redux'
 //import Grid from '@mui/material/Grid'; // Grid version 1
 
 function App() {
@@ -17,7 +21,7 @@ function App() {
         <Routes>
           <Route path="/" element={<Layout />}>
             <Route index element={<Home />} />
-            <Route path="profile" element={<Profile />} />
+            <Route path="profile" element={<ProtectedRoute ><Profile /></ProtectedRoute>} />
             <Route path="chats" element={<ChatList />}>
               <Route path=":id" element={<Chats />} />
               <Route path=":id/:author" element={<Chats />} />
@@ -27,6 +31,7 @@ function App() {
                 acts like a catch-all for URLs that we don't have explicit
                 routes for. */}
               <Route path="*" element={<NoMatch />} />
+              <Route path="login" element={<LoginForm />} />
             </Route>
         </Routes>
       </ThemeContext.Provider>
@@ -35,9 +40,14 @@ function App() {
 }
 function Layout() {
   const theme = useContext(ThemeContext);
+  const user = useSelector(selectUser());
+  const error = useSelector(selectUserError());
+  const loading = useSelector(selectUserLoading());
+  const isAuth = useSelector(selectIsAuth());
   return (
     <div>
       <p>Current Theme: {theme.name}</p>
+      <p>Auth status: {isAuth}</p>
       <ul>
         <li>
           <Link to="/profile">profile</Link>

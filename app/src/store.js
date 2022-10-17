@@ -1,6 +1,7 @@
 import { createStore, combineReducers, applyMiddleware } from 'redux'
 import chatsReducer from './store/chatsSlice.js'
 import gistsReducer from './store/gistsSlice.js'
+import userReducer from './store/userSlice.js'
 import thunkMiddleware from 'redux-thunk'
 import { composeWithDevTools } from 'redux-devtools-extension'
 import { persistStore, persistReducer } from 'redux-persist';
@@ -9,16 +10,13 @@ const composedEnhancer = composeWithDevTools(applyMiddleware(thunkMiddleware))
 const persistConfig = {
   key: 'root',
   storage,
+  blacklist: ['gists','user']
 }
 const persistedReducer = persistReducer(persistConfig, combineReducers({
   chats: chatsReducer,
+  gists: gistsReducer,
+  user: userReducer
 }));
 
-export const store = createStore(
-  combineReducers({
-    chats: persistedReducer,
-    gists: gistsReducer
-  }),
-  composedEnhancer
-)
+export const store = createStore(persistedReducer, composedEnhancer)
 export const persistor = persistStore(store);

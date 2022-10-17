@@ -3,14 +3,14 @@ import { createSlice } from "@reduxjs/toolkit";
 export const chatsSlice = createSlice({
   name: "chats",
   initialState: {
-    0: {
+/*     0: {
       name: "chat1s",
       messages: [],
     },
     1: {
       name: "chat2",
       messages: [],
-    },
+    }, */
   },
   reducers: {
     addMessage: (state, action) => {
@@ -33,6 +33,7 @@ export const chatsSlice = createSlice({
     },
   },
 });
+
 export function getMessages(id) {
   return (state) => state.chats[id].messages
 }
