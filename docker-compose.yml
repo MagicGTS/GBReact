@@ -7,7 +7,7 @@ services:
   node:
     tty: true # Enables debugging capabilities when attached to this container.
     image: docker.io/bitnami/node:18
-    command: sh -c 'if [ "$(ls -A ./)" ]; then npm install && npm start; else npx create-react-app ./ && npm install && npm install @mui/material @emotion/react @emotion/styled react-router-dom@6 @reduxjs/toolkit react-redux redux-devtools-extension redux-persist --save && npm start; fi'
+    command: sh -c 'if [ "$(ls -A ./)" ]; then npm install && npm start; else npx create-react-app ./ && npm install && npm install @mui/material @emotion/react @emotion/styled react-router-dom@6 @reduxjs/toolkit react-redux redux-devtools-extension redux-persist firebase --save && npm start; fi'
     ports:
       - 3000:3000
     volumes:

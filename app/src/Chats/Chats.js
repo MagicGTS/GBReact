@@ -4,14 +4,18 @@ import Grid from "@mui/material/Unstable_Grid2"; // Grid version 2
 import {
   useParams,
 } from 'react-router-dom';
-import { useSelector } from 'react-redux'
+import { useSelector,useDispatch } from 'react-redux'
 import { getMessages,getMessagesByAuthor } from '../store/chatsSlice.js'
-import React from "react";
+import { initMessageTracking } from '../store/chatsMiddleware.js'
+import React,{ useEffect } from "react";
 
 function Chats() {
   const { id, author} = useParams();
+  const dispatch = useDispatch();
   const selectedMessages = useSelector((typeof author !== "undefined") ? getMessagesByAuthor(id,author) : getMessages(id));
-  
+  useEffect(() => {
+    dispatch(initMessageTracking());
+    }, []);
   return (
     <Grid container spacing={1}>
        <Grid xs={10} md={8}>
