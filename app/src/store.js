@@ -10,7 +10,7 @@ const composedEnhancer = composeWithDevTools(applyMiddleware(thunkMiddleware))
 const persistConfig = {
   key: 'root',
   storage,
-  blacklist: ['gists','user']
+  blacklist: ['gists','user','chats']
 }
 const persistedReducer = persistReducer(persistConfig, combineReducers({
   chats: chatsReducer,
